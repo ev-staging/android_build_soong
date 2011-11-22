@@ -196,8 +196,11 @@ func Build(ctx Context, config Config) {
 	buildLock := BecomeSingletonOrFail(ctx, config)
 	defer buildLock.Unlock()
 
-	if inList("clean", config.Arguments()) || inList("clobber", config.Arguments()) {
+	if inList("clean", config.Arguments()) {
 		clean(ctx, config)
+		return
+	} else if inList("clobber", config.Arguments()) {
+		clobber(ctx, config)
 		return
 	}
 
