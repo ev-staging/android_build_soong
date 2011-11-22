@@ -58,9 +58,23 @@ const (
 	FILEMODE_USER_EXECUTE = FILEMODE_EXECUTE << FILEMODE_USER_SHIFT
 )
 
+// Remove everything under the product and common out directories.
+func clean(ctx Context, config Config) {
+	removeGlobs(ctx, filepath.Join(config.ProductOut(), "*"))
+	removeGlobs(ctx, filepath.Join(config.ProductOut(), "..?*"))
+	removeGlobs(ctx, filepath.Join(config.ProductOut(), ".[!.]*"))
+	commonOut := func() string {
+		return filepath.Join(config.OutDir(), "target", "common")
+	}
+	removeGlobs(ctx, filepath.Join(commonOut(), "*"))
+	removeGlobs(ctx, filepath.Join(commonOut(), "..?*"))
+	removeGlobs(ctx, filepath.Join(commonOut(), ".[!.]*"))
+	ctx.Println("Common build directories cleaned.")
+}
+
 // Remove everything under the out directory. Don't remove the out directory
 // itself in case it's a symlink.
-func clean(ctx Context, config Config) {
+func clobber(ctx Context, config Config) {
 	removeGlobs(ctx, filepath.Join(config.OutDir(), "*"))
 	removeGlobs(ctx, filepath.Join(config.OutDir(), "..?*"))
 	removeGlobs(ctx, filepath.Join(config.OutDir(), ".[!.]*"))

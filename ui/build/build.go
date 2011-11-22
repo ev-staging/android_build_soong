@@ -242,7 +242,13 @@ func Build(ctx Context, config Config) {
 
 	if inList("clean", config.Arguments()) || inList("clobber", config.Arguments()) {
 		logArgsOtherThan("clean", "clobber")
+	}
+
+	if inList("clean", config.Arguments()) {
 		clean(ctx, config)
+		return
+	} else if inList("clobber", config.Arguments()) {
+		clobber(ctx, config)
 		return
 	}
 
