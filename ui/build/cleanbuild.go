@@ -90,6 +90,20 @@ func ensureOutDirRemovable(ctx Context, config Config) {
 // itself in case it's a symlink.
 func clean(ctx Context, config Config) {
 	ensureOutDirRemovable(ctx, config)
+	removeGlobs(ctx, filepath.Join(config.ProductOut(), "*"))
+	removeGlobs(ctx, filepath.Join(config.ProductOut(), "..?*"))
+	removeGlobs(ctx, filepath.Join(config.ProductOut(), ".[!.]*"))
+	commonOut := func() string {
+		return filepath.Join(config.OutDir(), "target", "common")
+	}
+	removeGlobs(ctx, filepath.Join(commonOut(), "*"))
+	removeGlobs(ctx, filepath.Join(commonOut(), "..?*"))
+	removeGlobs(ctx, filepath.Join(commonOut(), ".[!.]*"))
+	ctx.Println("Common build directories cleaned.")
+}
+
+func clobber(ctx Context, config Config) {
+	ensureOutDirRemovable(ctx, config)
 	removeGlobs(ctx, filepath.Join(config.OutDir(), "*"))
 	removeGlobs(ctx, filepath.Join(config.OutDir(), "..?*"))
 	removeGlobs(ctx, filepath.Join(config.OutDir(), ".[!.]*"))
