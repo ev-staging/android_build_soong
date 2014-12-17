@@ -293,6 +293,8 @@ type productVariables struct {
 
 	TargetFSConfigGen []string `json:",omitempty"`
 
+	LibartImgDeviceBaseAddress *string `json:",omitempty"`
+
 	// include Evervolv variables
 	Evervolv android.ProductVariables
 }
