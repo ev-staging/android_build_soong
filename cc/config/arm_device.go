@@ -135,6 +135,9 @@ var (
 			// better solution comes around. See Bug 27340895
 			"-D__ARM_FEATURE_LPAE=1",
 		},
+		"scorpion": []string{
+			"-mcpu=cortex-a8",
+		},
 	}
 
 	armClangCpuVariantCflags  = copyVariantFlags(armCpuVariantCflags)
@@ -164,6 +167,7 @@ func init() {
 		"cortex-a75",
 		"krait",
 		"kryo",
+		"scorpion",
 		"exynos-m1",
 		"exynos-m2",
 		"denver")
