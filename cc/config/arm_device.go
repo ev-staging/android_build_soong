@@ -137,6 +137,9 @@ var (
 			// better solution comes around. See Bug 27340895
 			"-D__ARM_FEATURE_LPAE=1",
 		},
+		"scorpion": []string{
+			"-mcpu=cortex-a8",
+		},
 	}
 
 	armClangCpuVariantCflags  = copyVariantFlags(armCpuVariantCflags)
@@ -159,6 +162,7 @@ func init() {
 		"cortex_a53",
 		"cortex_a53_a57",
 		"krait",
+		"scorpion",
 		"denver")
 
 	replaceFirst := func(slice []string, from, to string) {
