@@ -116,6 +116,9 @@ var (
 			// don't advertise.
 			"-D__ARM_FEATURE_LPAE=1",
 		},
+		"scorpion": []string{
+			"-mcpu=cortex-a8",
+		},
 	}
 
 	armClangCpuVariantCflags  = copyVariantFlags(armCpuVariantCflags)

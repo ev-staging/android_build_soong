@@ -133,6 +133,7 @@ type archProperties struct {
 			Cortex_a53     interface{} `blueprint:"filter(android:\"arch_variant\")"`
 			Cortex_a53_a57 interface{} `blueprint:"filter(android:\"arch_variant\")"`
 			Krait          interface{} `blueprint:"filter(android:\"arch_variant\")"`
+			Scorpion       interface{} `blueprint:"filter(android:\"arch_variant\")"`
 			Denver         interface{} `blueprint:"filter(android:\"arch_variant\")"`
 		}
 
@@ -922,6 +923,7 @@ func decodeMegaDevice() ([]Arch, error) {
 		{"arm", "armv7-a-neon", "cortex-a53.a57", []string{"armeabi-v7a"}},
 		{"arm", "armv7-a-neon", "denver", []string{"armeabi-v7a"}},
 		{"arm", "armv7-a-neon", "krait", []string{"armeabi-v7a"}},
+		{"arm", "armv7-a-neon", "scorpion", []string{"armeabi-v7a"}},
 		{"arm64", "", "cortex-a53", []string{"arm64-v8a"}},
 		{"arm64", "", "denver64", []string{"arm64-v8a"}},
 		{"mips", "mips32-fp", "", []string{"mips"}},
