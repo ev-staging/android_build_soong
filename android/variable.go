@@ -89,7 +89,7 @@ type variableProperties struct {
 		}
 
 		// include Evervolv variables
-		*android.Product_variables
+		Evervolv android.Product_variables
 	} `android:"arch_variant"`
 }
 
@@ -159,7 +159,7 @@ type productVariables struct {
 	BoardUsesQTIHardware *bool `json:",omitempty"`
 
 	// include Evervolv variables
-	*android.ProductVariables
+	Evervolv android.ProductVariables
 }
 
 func boolPtr(v bool) *bool {
