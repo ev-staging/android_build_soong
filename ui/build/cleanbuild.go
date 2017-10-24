@@ -91,6 +91,8 @@ func ensureOutDirRemovable(ctx Context, config Config) {
 func clean(ctx Context, config Config) {
 	ensureOutDirRemovable(ctx, config)
 	removeGlobs(ctx, filepath.Join(config.OutDir(), "*"))
+	removeGlobs(ctx, filepath.Join(config.OutDir(), "..?*"))
+	removeGlobs(ctx, filepath.Join(config.OutDir(), ".[!.]*"))
 	ctx.Println("Entire build directory removed.")
 }
 
