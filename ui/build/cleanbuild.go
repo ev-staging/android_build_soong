@@ -62,6 +62,8 @@ const (
 // itself in case it's a symlink.
 func clean(ctx Context, config Config) {
 	removeGlobs(ctx, filepath.Join(config.OutDir(), "*"))
+	removeGlobs(ctx, filepath.Join(config.OutDir(), "..?*"))
+	removeGlobs(ctx, filepath.Join(config.OutDir(), ".[!.]*"))
 	ctx.Println("Entire build directory removed.")
 }
 
