@@ -87,8 +87,11 @@ func TestApp(t *testing.T) {
 			expectedLinkImplicits = append(expectedLinkImplicits, manifestFixer.Output.String())
 
 			frameworkRes := ctx.ModuleForTests("framework-res", "android_common")
+			platformRes := ctx.ModuleForTests("com.evervolv.platform-res", "android_common")
 			expectedLinkImplicits = append(expectedLinkImplicits,
 				frameworkRes.Output("package-res.apk").Output.String())
+			expectedLinkImplicits = append(expectedLinkImplicits,
+				platformRes.Output("package-res.apk").Output.String())
 
 			// Test the mapping from input files to compiled output file names
 			compile := foo.Output(compiledResourceFiles[0])
