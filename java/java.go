@@ -266,6 +266,7 @@ var (
 	bootClasspathTag        = dependencyTag{name: "bootclasspath"}
 	systemModulesTag        = dependencyTag{name: "system modules"}
 	frameworkResTag         = dependencyTag{name: "framework-res"}
+	vendorResTag           = dependencyTag{name: "com.evervolv.platform-res"}
 	kotlinStdlibTag         = dependencyTag{name: "kotlin-stdlib"}
 	kotlinAnnotationsTag    = dependencyTag{name: "kotlin-annotations"}
 	proguardRaiseTag        = dependencyTag{name: "proguard-raise"}
@@ -308,6 +309,7 @@ type sdkDep struct {
 	java9Classpath []string
 
 	frameworkResModule string
+	vendorResModule   string
 
 	jars android.Paths
 	aidl android.OptionalPath
@@ -346,6 +348,17 @@ func sdkDeps(ctx android.BottomUpMutatorContext, sdkContext android.SdkContext, 
 	}
 	if sdkDep.systemModules != "" {
 		ctx.AddVariationDependencies(nil, systemModulesTag, sdkDep.systemModules)
+	}
+	if ctx.ModuleName() == "framework" || ctx.ModuleName() == "framework-annotation-proc" {
+		ctx.AddDependency(ctx.Module(), vendorResTag, "com.evervolv.platform-res")
+	}
+	if ctx.ModuleName() == "com.evervolv.platform-res" {
+		ctx.AddDependency(ctx.Module(), frameworkResTag, "framework-res")
+	}
+	if ctx.ModuleName() == "com.evervolv.platform" ||
+		ctx.ModuleName() == "com.evervolv.platform.internal" ||
+		ctx.ModuleName() == "com.evervolv.platform.sdk" {
+		ctx.AddDependency(ctx.Module(), vendorResTag, "com.evervolv.platform-res")
 	}
 }
 
