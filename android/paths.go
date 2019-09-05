@@ -1081,6 +1081,21 @@ func pathForSource(ctx PathContext, pathComponents ...string) (SourcePath, error
 	return ret, nil
 }
 
+// pathForSourceRelaxed creates a SourcePath from pathComponents, but does not check that it exists.
+// It differs from pathForSource in that the path is allowed to exist outside of the PathContext.
+func pathForSourceRelaxed(ctx PathContext, pathComponents ...string) (SourcePath, error) {
+	p := filepath.Join(pathComponents...)
+	ret := SourcePath{basePath{p, ""}}
+
+	// absolute path already checked by validatePath
+	// special-case for now
+	if strings.HasPrefix(ret.String(), ctx.Config().soongOutDir) && !strings.Contains(ret.String(), ctx.Config().soongOutDir+"/.export") {
+		return ret, fmt.Errorf("source path %q is in output", ret.String())
+	}
+
+	return ret, nil
+}
+
 // existsWithDependencies returns true if the path exists, and adds appropriate dependencies to rerun if the
 // path does not exist.
 func existsWithDependencies(ctx PathGlobContext, path SourcePath) (exists bool, err error) {
@@ -1102,6 +1117,35 @@ func existsWithDependencies(ctx PathGlobContext, path SourcePath) (exists bool, 
 // On error, it will return a usable, but invalid SourcePath, and report a ModuleError.
 func PathForSource(ctx PathContext, pathComponents ...string) SourcePath {
 	path, err := pathForSource(ctx, pathComponents...)
+	if err != nil {
+		reportPathError(ctx, err)
+	}
+
+	if pathtools.IsGlob(path.String()) {
+		ReportPathErrorf(ctx, "path may not contain a glob: %s", path.String())
+	}
+
+	if modCtx, ok := ctx.(ModuleMissingDepsPathContext); ok && ctx.Config().AllowMissingDependencies() {
+		exists, err := existsWithDependencies(modCtx, path)
+		if err != nil {
+			reportPathError(ctx, err)
+		}
+		if !exists {
+			modCtx.AddMissingDependencies([]string{path.String()})
+		}
+	} else if exists, _, err := ctx.Config().fs.Exists(path.String()); err != nil {
+		ReportPathErrorf(ctx, "%s: %s", path, err.Error())
+	} else if !exists && !ctx.Config().TestAllowNonExistentPaths {
+		ReportPathErrorf(ctx, "source path %q does not exist", path)
+	}
+	return path
+}
+
+// PathForSourceRelaxed joins the provided path components.  Unlike PathForSource,
+// the result is allowed to exist outside of the source dir.
+// On error, it will return a usable, but invalid SourcePath, and report a ModuleError.
+func PathForSourceRelaxed(ctx PathContext, pathComponents ...string) SourcePath {
+	path, err := pathForSourceRelaxed(ctx, pathComponents...)
 	if err != nil {
 		reportPathError(ctx, err)
 	}
