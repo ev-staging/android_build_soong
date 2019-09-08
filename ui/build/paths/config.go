@@ -99,6 +99,7 @@ var Configuration = map[string]PathConfig{
 	"lz4c":     Allowed,
 	"lz4cat":   Allowed,
 	"m4":       Allowed,
+	"mkimage":  Allowed,
 	"nproc":    Allowed,
 	"openssl":  Allowed,
 	"patch":    Allowed,
