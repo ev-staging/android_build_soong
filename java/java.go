@@ -349,16 +349,8 @@ func sdkDeps(ctx android.BottomUpMutatorContext, sdkContext android.SdkContext, 
 	if sdkDep.systemModules != "" {
 		ctx.AddVariationDependencies(nil, systemModulesTag, sdkDep.systemModules)
 	}
-	if ctx.ModuleName() == "framework" || ctx.ModuleName() == "framework-annotation-proc" {
-		ctx.AddDependency(ctx.Module(), vendorResTag, "com.evervolv.platform-res")
-	}
 	if ctx.ModuleName() == "com.evervolv.platform-res" {
 		ctx.AddDependency(ctx.Module(), frameworkResTag, "framework-res")
-	}
-	if ctx.ModuleName() == "com.evervolv.platform" ||
-		ctx.ModuleName() == "com.evervolv.platform.internal" ||
-		ctx.ModuleName() == "com.evervolv.platform.sdk" {
-		ctx.AddDependency(ctx.Module(), vendorResTag, "com.evervolv.platform-res")
 	}
 }
 
