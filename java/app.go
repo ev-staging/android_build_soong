@@ -449,7 +449,7 @@ func (a *AndroidApp) installPath(ctx android.ModuleContext) android.InstallPath 
 		// framework-res.apk is installed as system/framework/framework-res.apk
 		installDir = "framework"
 	} else if ctx.ModuleName() == "com.evervolv.platform-res" {
-		// com.evervolv.platform-res.apk is installed as system_ext/framework/com.evervolv.platform-res.apk
+		// com.evervolv.platform-res.apk is installed as system/framework/com.evervolv.platform-res.apk
 		installDir = "framework"
 	} else if a.Privileged() {
 		installDir = filepath.Join("priv-app", a.installApkName)
@@ -627,7 +627,7 @@ func (a *AndroidApp) generateAndroidBuildActions(ctx android.ModuleContext) {
 		// framework-res.apk is installed as system/framework/framework-res.apk
 		a.installDir = android.PathForModuleInstall(ctx, "framework")
 	} else if ctx.ModuleName() == "com.evervolv.platform-res" {
-		// com.evervolv.platform-res.apk is installed as system_ext/framework/com.evervolv.platform-res.apk
+		// com.evervolv.platform-res.apk is installed as system/framework/com.evervolv.platform-res.apk
 		a.installDir = android.PathForModuleInstall(ctx, "framework")
 	} else if a.Privileged() {
 		a.installDir = android.PathForModuleInstall(ctx, "priv-app", a.installApkName)
