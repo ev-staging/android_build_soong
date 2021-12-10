@@ -2468,6 +2468,10 @@ func RewriteHeaderLibs(c LinkableInterface, snapshotInfo **SnapshotInfo, actx an
 		// Replace device_kernel_headers with generated_kernel_headers
 		// for inline kernel building
 		if entry == "device_kernel_headers" || entry == "qti_kernel_headers" {
+			if (config.Getenv("INLINE_KERNEL_BUILDING") == "true") {
+			    newHeaderLibs = append(newHeaderLibs, "generated_kernel_headers")
+			    continue
+			}
 			newHeaderLibs = append(newHeaderLibs, "generated_kernel_headers")
 			continue
 		}
