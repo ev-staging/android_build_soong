@@ -455,6 +455,18 @@ func NewConfig(ctx Context, args ...string) Config {
 		ret.riggedDistDirForBazel = ret.distDir
 	}
 
+	kernelLtoFlag := ""
+	if buildFlag, ok := ret.environ.Get("KERNEL_LTO"); ok {
+		kernelLtoFlag = buildFlag
+	} else if ret.totalRAM <= 64*1024*1024*1024 {
+		// Less than 64GB of ram, restrict to thin LTO compilation
+		kernelLtoFlag = "thin"
+	}
+
+	if kernelLtoFlag != "" {
+		ret.environ.Set("KERNEL_LTO", kernelLtoFlag)
+	}
+
 	c := Config{ret}
 	storeConfigMetrics(ctx, c)
 	return c
